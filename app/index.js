@@ -9,11 +9,16 @@ var http = require('http');
 var https = require('https');
 
 var url = require('url');
-var StringDecoder = require('string').StringDecoder;
+var StringDecoder = require('string_decoder').StringDecoder;
+
+var _data = require('./lib/data');
 
 
-
-
+// Testing
+// @TODO delete this
+_data.delete('test','newFile', function(err){
+    console.log('Error: ', err);
+});
 
 
 var httpServer = http.createServer(function(req, res){
