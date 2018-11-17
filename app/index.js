@@ -2,7 +2,10 @@
 * This is the entry point for Node
 */
 
-var config = require('./config');
+var config = require('./lib/config');
+var handlers = require('./lib/handlers');
+var helpers = require('./lib/helpers');
+
 var fs = require('fs');
 
 var http = require('http');
@@ -11,20 +14,13 @@ var https = require('https');
 var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 
-var _data = require('./lib/data');
 
 
-// Testing
-// @TODO delete this
-_data.delete('test','newFile', function(err){
-    console.log('Error: ', err);
-});
 
 
 var httpServer = http.createServer(function(req, res){
     unifiedServer(req, res);
 });
-
 
 
 
@@ -99,9 +95,9 @@ var unifiedServer = function(req, res){
         var data = {
             'path' : trimmedPath,
             'method' : method,
-            'query' : queryStringObject,
+            'queryStringObject' : queryStringObject,
             'headers' : headers,
-            'payload' : payload
+            'payload' : helpers.parseJsonToObject(buffer)
         }
 
         var chosenhandler = typeof(router[trimmedPath]) != 'undefined' ? router[trimmedPath] : handlers.notFound;
@@ -128,25 +124,8 @@ var unifiedServer = function(req, res){
 
 
 
-
-// Request handlers
-var handlers = {};
-
-// We only need to send a status code when a client is pinging the server
-handlers.ping = function(data, callback){
-    callback(200);
-}
-
-// Not payload, only status code 404
-handlers.notFound = function(data, callback){
-    callback(404);
-}
-
-
-
-
-
 // Request router
 var router = {
-    'ping' : handlers.ping
+    'ping' : handlers.ping,
+    'users' : handlers.users
 };
