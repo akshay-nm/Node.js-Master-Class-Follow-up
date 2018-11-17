@@ -58,5 +58,6 @@ helpers.createRandomString = function(strLength) {
     }
 }
 
+
 // Export the helpers
 module.exports = helpers;
