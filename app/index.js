@@ -98,7 +98,7 @@ var unifiedServer = function(req, res){
             'queryStringObject' : queryStringObject,
             'headers' : headers,
             'payload' : helpers.parseJsonToObject(buffer)
-        }
+        };
 
         var chosenhandler = typeof(router[trimmedPath]) != 'undefined' ? router[trimmedPath] : handlers.notFound;
 
@@ -128,5 +128,6 @@ var unifiedServer = function(req, res){
 var router = {
     'ping' : handlers.ping,
     'users' : handlers.users,
-    'tokens' : handlers.tokens
+    'tokens' : handlers.tokens,
+    'checks' : handlers.checks
 };
