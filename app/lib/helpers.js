@@ -6,7 +6,8 @@
 var config = require('./config');
 
 var crypto = require('crypto');
-
+var querystring = require('querystring');
+var https = require('https');
 
 
 
@@ -55,6 +56,63 @@ helpers.createRandomString = function(strLength) {
         return str;
     } else {
         return false;
+    }
+}
+
+// Send an SMS via twilio
+
+helpers.sendTwilioSms = function(phone, msg, callback) {
+    phone = typeof(phone) == 'string' && phone.trim().length == 10 ? phone : false;
+    msg = typeof(msg) == 'string' && msg.trim().length > 0 && msg.trim().length <=1600 ? msg : false;
+
+    if(phone && msg){
+        // Configure the request payload that we want to send to twilio
+
+        var payload = {
+            'From' : config.twilio.fromPhone,
+            'To' : '+91' + phone,
+            'Body' : msg
+        };
+
+        // Stringify
+        var stringPayload = querystring.stringify(payload);
+
+        var requestDetails = {
+            'protocol' : 'https:',
+            'hostname' : 'api.twilio.com',
+            'method' : 'POST',
+            'path' : '/2010-04-01/Accounts/'+config.twilio.accountSid+'/Messages.json',
+            'auth' : config.twilio.accountSid+':'+config.twilio.authToken,
+            'headers' : {
+                'Content-Type' : 'application/x-www-urlencoded',
+                'Content-Length' : Buffer.byteLength(stringPayload)
+            }
+        };
+
+        // Instantiate the request object
+        var req = https.request(requestDetails, function(res){
+            // Grab the status of the sent request
+            var status = res.statusCode;
+
+            // Callback successfully if the request went through
+            if(status == 200 || status == 201) {
+                callback(false);
+            } else {
+                callback('Status code:', status);
+            }
+        });
+
+        // Bind to the error event so it doesnt get thrown
+        req.on('error', function(e){
+            callback('Error:',e);
+        });
+
+        req.write(stringPayload);
+
+        req.end();
+
+    } else {
+        callback('Given parameters were missing of invalid');
     }
 }
 

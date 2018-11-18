@@ -6,7 +6,12 @@ environments.staging = {
     'httpsPort': 3001,
     'envName' : 'staging',
     'hashingSecret' : 'thisIsASecret',
-    'maxChecks' : 5
+    'maxChecks' : 5,
+    'twilio' : {
+        'accountSid' : 'AC3e1fba43ce08b0098e6b3e0ace1446ba',
+        'authToken' : '22f6790b1b463d33e19ca2831a224265',
+        'fromPhone' : '+14582214544'
+    }
 };
 
 // Production environment configuration
@@ -15,7 +20,12 @@ environments.production = {
     'httpsPort' : 5001,
     'envName' : 'production',
     'hashingSecret' : 'thisIsAlsoASecret',
-    'maxChecks' : 5
+    'maxChecks' : 5,
+    'twilio' : {
+        'accountSid' : 'AC3e1fba43ce08b0098e6b3e0ace1446ba',
+        'authToken' : '22f6790b1b463d33e19ca2831a224265',
+        'fromPhone' : '+14582214544'
+    }
 };
 
 // Check if NODE_ENV was entered while running the app

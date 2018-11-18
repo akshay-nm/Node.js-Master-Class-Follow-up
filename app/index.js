@@ -15,6 +15,9 @@ var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 
 
+helpers.sendTwilioSms('8447981252', 'SUPPP! NIGG!', function(err){
+    console.log(err);
+});
 
 
 
