@@ -173,7 +173,7 @@ handlers._users.delete = function(data, callback){
 
                                 var userChecks = typeof(userData.checks) == 'object' && userData.checks instanceof Array ? userData.checks : [];
 
-                                var checksToBeDeleted = userCheck.length;
+                                var checksToBeDeleted = userChecks.length;
                                 var deletionErrors = false;
                                 var checksDeleted = 0;
 

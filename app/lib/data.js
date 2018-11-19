@@ -29,15 +29,15 @@ lib.create = function(dir, file, data, callback) {
                         if(!err){
                             callback(false);
                         } else {
-                            callback('UNABLE TO CLOSE FILE!');
+                            callback('Unable to close file');
                         }
                     });
                 } else {
-                    callback('UNABLE TO WRITE TO FILE!');
+                    callback('Unable to write file');
                 }
             })
         } else {
-            callback('FILE ALREADY EXISTS');
+            callback('File already exists');
         }
     });
 };
@@ -72,19 +72,19 @@ lib.update = function(dir, file, data, callback){
                                 if(!err){
                                     callback(false);
                                 } else {
-                                    callback('UNABLE TO CLOSE THE FILE AFTER UPDATE!');
+                                    callback('Unable to close file after update');
                                 }
                             });
                         } else {
-                            callback('UNABLE TO WRITE DATA TO EXISTING FILE!');
+                            callback('Unable to write on existing file');
                         }
                     });
                 } else {
-                    callback('UNABLE TO TRUNCATE FILE!');
+                    callback('Unable to truncate file');
                 }
             });
         } else {
-            callback('COULD NOT OPEN FILE FOR UDPATE! IT MAY NOT EXIST YET!');
+            callback('Could not open file for update, it may not exist');
         }
     });
 };
@@ -96,11 +96,31 @@ lib.delete = function(dir, file, callback){
         if(!err){
             callback(false);
         } else {
-            callback('UNABLE TO DELETE THE FILE!');
+            callback('Unable to delete the file');
         }
     })
 }
 
+// List all the items in a directory
+lib.list = function(dir, callback) {
+    fs.readdir(lib.baseDir + dir + '/', function(err, data){
+        if(!err && data){
+            var trimmedFileName = [];
+            data.forEach(fileName => {
+                trimmedFileName.push(fileName.replace('.json',''));
+            });
+            // @TODO: Find a cleaner way to do this
+            // Remove .gitignore file from list
+            var i = trimmedFileName.indexOf(".gitignore");
+            if(i > -1){
+                trimmedFileName.splice(i, 1);
+            }
+            callback(false, trimmedFileName);
+        } else {
+            callback(err, data);
+        }
+    })
+}
 
 
 // Export the module

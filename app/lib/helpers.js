@@ -63,7 +63,7 @@ helpers.createRandomString = function(strLength) {
 
 helpers.sendTwilioSms = function(phone, msg, callback) {
     phone = typeof(phone) == 'string' && phone.trim().length == 10 ? phone : false;
-    msg = typeof(msg) == 'string' && msg.trim().length > 0 && msg.trim().length <=1600 ? msg : false;
+    msg = typeof(msg) == 'string' && msg.trim().length > 0 && msg.trim().length <= 1600 ? msg : false;
 
     if(phone && msg){
         // Configure the request payload that we want to send to twilio
@@ -84,7 +84,7 @@ helpers.sendTwilioSms = function(phone, msg, callback) {
             'path' : '/2010-04-01/Accounts/'+config.twilio.accountSid+'/Messages.json',
             'auth' : config.twilio.accountSid+':'+config.twilio.authToken,
             'headers' : {
-                'Content-Type' : 'application/x-www-urlencoded',
+                'Content-Type' : 'application/x-www-form-urlencoded',
                 'Content-Length' : Buffer.byteLength(stringPayload)
             }
         };
@@ -98,7 +98,7 @@ helpers.sendTwilioSms = function(phone, msg, callback) {
             if(status == 200 || status == 201) {
                 callback(false);
             } else {
-                callback('Status code:', status);
+                callback('Status code returned was:'+status+":"+phone+":"+msg);
             }
         });
 
